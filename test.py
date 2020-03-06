@@ -96,7 +96,7 @@ class Test(object):
                 os.makedirs('%s/%02d' % (self.save_path, self.max_iters))
 
             imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
-                                  post_processed_output)
+                           post_processed_output)
 
         print('** Done Adaptation for X', self.scale, os.path.basename(self.img_name),', PSNR: %.4f' % self.psnr[-1], ' **')
         print('')
@@ -217,7 +217,7 @@ class Test(object):
         if self.back_projection == True:
             for bp_iter in range(self.back_projection_iters):
                 output = back_projection(output, self.img, down_kernel=self.kernel,
-                                                  up_kernel=self.upscale_method, sf=self.scale, ds_method=self.ds_method)
+                                         up_kernel=self.upscale_method, sf=self.scale, ds_method=self.ds_method)
 
         processed_output=np.round(np.clip(output*255, 0., 255.)).astype(np.uint8)
 
@@ -233,40 +233,40 @@ class Test(object):
 
         return processed_output
 
-	def inference(self, img, img_name):
-		'''
-		  # inp: image_name 
-		  # op : upscaled image 
+        def inference(self, img, img_name):
+            '''
+              # inp: image_name
+              # op : upscaled image
 
-		'''
-		self.img=img
-		print("input image shape:",self.img.shape)
-		# self.gt = modcrop(gt, self.scale)
+            '''
+            self.img=img
+            print("input image shape:",self.img.shape)
+            # self.gt = modcrop(gt, self.scale)
 
-		self.img_name=img_name
+            self.img_name=img_name
 
 
-		self.sf = np.array(self.scale_factors)
-		self.output_shape = np.uint(np.ceil(np.array(self.img.shape[0:2]) * self.scale))
+            self.sf = np.array(self.scale_factors)
+            self.output_shape = np.uint(np.ceil(np.array(self.img.shape[0:2]) * self.scale))
 
-		# Train the network
-		# self.quick_test()/
-		self.initialize()
+            # Train the network
+            # self.quick_test()/
+            self.initialize()
 
-		# print('[*] Baseline ')
-		self.train()
+            # print('[*] Baseline ')
+            self.train()
 
-		# post_processed_output = self.final_test()
-		output = self.forward_pass(self.img, (self.img.shape[0]*self.scale,self.img.shape[0]*self.scale,3))
+            # post_processed_output = self.final_test()
+            output = self.forward_pass(self.img, (self.img.shape[0]*self.scale,self.img.shape[0]*self.scale,3))
 
-		processed_output=np.round(np.clip(output*255, 0., 255.)).astype(np.uint8)
+            processed_output=np.round(np.clip(output*255, 0., 255.)).astype(np.uint8)
 
-		if self.save_results:
-		    if not os.path.exists(self.save_path):
-		      os.makedirs(self.save_path)
-		    if not os.path.exists('%s/%02d' % (self.save_path, self.max_iters)):
-		        os.makedirs('%s/%02d' % (self.save_path, self.max_iters))
+            if self.save_results:
+                if not os.path.exists(self.save_path):
+                    os.makedirs(self.save_path)
+                if not os.path.exists('%s/%02d' % (self.save_path, self.max_iters)):
+                    os.makedirs('%s/%02d' % (self.save_path, self.max_iters))
 
-		    imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
-		                          processed_output)
-		    # imageio.imsave("test.png",processed_output)
+                imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
+                               processed_output)
+                # imageio.imsave("test.png",processed_output)
