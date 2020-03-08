@@ -270,3 +270,6 @@ class Test(object):
             imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
                            processed_output)
             # imageio.imsave("test.png",processed_output)
+    
+    # def train_and_save(img_path,gt_path,model_save,kernel,model_save_path):
+        

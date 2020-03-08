@@ -86,21 +86,26 @@ def main():
     gt_path=sorted(glob.glob(os.path.join(args.gtpath, '*.png')))
 
     scale=4.0
-
     try:
         kernel=scipy.io.loadmat(args.kernelpath)['kernel']
     except:
         kernel='cubic'
 
+
+    # train_and_save(img_path,gt_path,model_save,kernel,model_save_path)
+
     Tester=test.Test(model_path, args.savepath, kernel, scale, conf, args.model, args.num_of_adaptation)
-    P=[]
+    # P=[]
     for i in range(len(img_path)):
         print(img_path[i])
         img=imread(img_path[i])
         # gt=imread(gt_path[i])
 
         # _, pp =Tester(img, gt, img_path[i])
-        Tester.inference(img,img_path[i])
+        # Tester.inference(img,img_path[i])
+        output_image= Tester.forward_pass(img,(img.shape[0]*scale,img.shape[1]*scale,3))
+        imageio.imsave('%s/%s.png' % (args.savepath, os.path.basename(self.img_name)[:-4]),
+                           post_processed_output)
         # P.append(pp)
     # print(P)
     # print("len(P)",len(P))
