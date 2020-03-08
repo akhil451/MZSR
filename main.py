@@ -84,7 +84,7 @@ def main():
 
     img_path=sorted(glob.glob(os.path.join(args.inputpath,"*")))
     gt_path=sorted(glob.glob(os.path.join(args.gtpath, '*.png')))
-
+    test_img_path=sorted(glob.glob(os.path.join(args.testpath)))
     scale=4.0
     try:
         kernel=scipy.io.loadmat(args.kernelpath)['kernel']
@@ -96,9 +96,9 @@ def main():
 
     Tester=test.Test(model_path, args.savepath, kernel, scale, conf, args.model, args.num_of_adaptation)
     # P=[]
-    for i in range(len(img_path)):
+    for i in range(len(test_img_path)):
         print(img_path[i])
-        img=imread(img_path[i])
+        img=imread(test_img_path[i])
         # gt=imread(gt_path[i])
 
         # _, pp =Tester(img, gt, img_path[i])
