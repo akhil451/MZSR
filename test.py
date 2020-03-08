@@ -27,6 +27,8 @@ class Test(object):
         self.scale_factors = [self.scale, self.scale]
 
         self.build_network(conf)
+        self.initialize()
+
 
     def build_network(self, conf):
         tf.reset_default_graph()
@@ -78,7 +80,6 @@ class Test(object):
 
         print('** Start Adaptation for X', self.scale, os.path.basename(self.img_name), ' **')
         # Initialize network
-        self.initialize()
 
         self.sf = np.array(self.scale_factors)
         self.output_shape = np.uint(np.ceil(np.array(self.img.shape[0:2]) * self.scale))
@@ -89,19 +90,19 @@ class Test(object):
         print('[*] Baseline ')
         self.train()
 
-        post_processed_output = self.final_test()
+        # post_processed_output = self.final_test()
 
-        if self.save_results:
-            if not os.path.exists('%s/%02d' % (self.save_path, self.max_iters)):
-                os.makedirs('%s/%02d' % (self.save_path, self.max_iters))
+        # if self.save_results:
+        #     if not os.path.exists('%s/%02d' % (self.save_path, self.max_iters)):
+        #         os.makedirs('%s/%02d' % (self.save_path, self.max_iters))
 
-            imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
-                           post_processed_output)
+        #     imageio.imsave('%s/%02d/%s.png' % (self.save_path, self.max_iters, os.path.basename(self.img_name)[:-4]),
+        #                    post_processed_output)
 
-        print('** Done Adaptation for X', self.scale, os.path.basename(self.img_name),', PSNR: %.4f' % self.psnr[-1], ' **')
-        print('')
+        # print('** Done Adaptation for X', self.scale, os.path.basename(self.img_name),', PSNR: %.4f' % self.psnr[-1], ' **')
+        # print('')
 
-        return post_processed_output, self.psnr
+        # return post_processed_output, self.psnr
 
     def train(self):
         self.hr_father = self.img
@@ -234,9 +235,9 @@ class Test(object):
         return processed_output
 
 
-    def final_test_(self):
+    def final_test_(self,test_image,gt):
 
-        output = self.forward_pass(self.img, self.gt.shape)
+        output = self.forward_pass(test_image, gt.shape)
         if self.back_projection == True:
             for bp_iter in range(self.back_projection_iters):
                 output = back_projection(output, self.img, down_kernel=self.kernel,

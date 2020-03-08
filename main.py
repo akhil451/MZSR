@@ -95,24 +95,34 @@ def main():
     # train_and_save(img_path,gt_path,model_save,kernel,model_save_path)
 
     Tester=test.Test(model_path, args.savepath, kernel, scale, conf, args.model, args.num_of_adaptation)
-    gt = imread(gt_path[i])
     # P=[]
-    for i in range(len(test_img_path)):
+    for i in range(len(img_path)):
         print(img_path[i])
-        img=imread(test_img_path[i])
-        # gt=imread(gt_path[i])
+        img=imread(img_path[i])
+        gt=imread(gt_path[i])
 
-        # _, pp =Tester(img, gt, img_path[i])
+        Tester(img, gt, img_path[i])
         # Tester.inference(img,img_path[i])
-        output_image= Tester.forward_pass(img,(img.shape[0]*scale,img.shape[1]*scale,3))
-        imageio.imsave('%s/%s.png' % (args.savepath, os.path.basename(self.img_name)[:-4]),
-                           post_processed_output)
+        # output_image= Tester.forward_pass(img,(img.shape[0]*scale,img.shape[1]*scale,3))s
+        
         # P.append(pp)
     # print(P)
     # print("len(P)",len(P))
     # avg_PSNR=np.mean(P, 0)
 
     # print('[*] Average PSNR ** Initial: %.4f, Final : %.4f' % tuple(avg_PSNR))
+
+
+    for i in range(len(test_img_path)):
+        print(test_img_path[i])
+        img=imread(test_img_path[i])
+
+
+        post_processed_output = final_test_(img,gt.shape)
+
+        imageio.imsave('%s/%s.png' % (args.savepath, os.path.basename(img_path)[:-4]),
+                           post_processed_output)
+
 
 
 if __name__=='__main__':

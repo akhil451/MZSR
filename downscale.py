@@ -16,7 +16,7 @@ def modcrop(imgs, modulo):
         szt = sz[0:2]
         szt = szt // modulo
         szt =[int(S) for S in szt]
-        szt=tuple(szt)
+        szt=tuple(szt	)
         # out = imgs[0:int(szt[0]), 0:int(szt[1
         out = cv2.resize(img,szt)
 
@@ -24,7 +24,14 @@ def modcrop(imgs, modulo):
 
 base ="/home/akhil/spyne/projects/image_enhancement/temp/MZSR/GT/Set5"
 save_path ="/home/akhil/spyne/projects/image_enhancement/temp/MZSR/Input/g20/Set5"
-for file in os.listdir(base):
-	img = cv2.imread(os.path.join(base,file))
-	img = modcrop(img,scale)
-	cv2.imwrite(os.path.join(save_path,file),img)
+# for file in os.listdir(base):
+# 	img = cv2.imread(os.path.join(base,file))
+# 	img = modcrop(img,scale)
+# 	cv2.imwrite(os.path.join(save_path,file),img)
+
+
+print("testing op:")
+
+for file in os.listdir(save_path):
+	img = cv2.imread(os.path.join(save_path,file))
+	print(img.shape)
