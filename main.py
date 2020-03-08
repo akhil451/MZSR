@@ -95,6 +95,7 @@ def main():
     # train_and_save(img_path,gt_path,model_save,kernel,model_save_path)
 
     Tester=test.Test(model_path, args.savepath, kernel, scale, conf, args.model, args.num_of_adaptation)
+    gt = imread(gt_path[i])
     # P=[]
     for i in range(len(test_img_path)):
         print(img_path[i])

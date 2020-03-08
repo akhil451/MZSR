@@ -233,6 +233,29 @@ class Test(object):
 
         return processed_output
 
+
+    def final_test_(self):
+
+        output = self.forward_pass(self.img, self.gt.shape)
+        if self.back_projection == True:
+            for bp_iter in range(self.back_projection_iters):
+                output = back_projection(output, self.img, down_kernel=self.kernel,
+                                         up_kernel=self.upscale_method, sf=self.scale, ds_method=self.ds_method)
+
+        processed_output=np.round(np.clip(output*255, 0., 255.)).astype(np.uint8)
+
+        '''Shave'''
+        scale=int(self.scale)
+        PSNR=psnr(rgb2y(np.round(np.clip(self.gt*255., 0.,255.)).astype(np.uint8))[scale:-scale, scale:-scale],
+                  rgb2y(processed_output)[scale:-scale, scale:-scale])
+
+        # PSNR=psnr(rgb2y(np.round(np.clip(self.gt*255., 0.,255.)).astype(np.uint8)),
+        #           rgb2y(processed_output))
+
+        self.psnr.append(PSNR)
+
+        return processed_output
+
     def inference(self, img, img_name):
         '''
           # inp: image_name
@@ -272,4 +295,3 @@ class Test(object):
             # imageio.imsave("test.png",processed_output)
     
     # def train_and_save(img_path,gt_path,model_save,kernel,model_save_path):
-        
